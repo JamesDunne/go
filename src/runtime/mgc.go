@@ -526,9 +526,9 @@ func (c *gcControllerState) findRunnable(_p_ *p) *g {
 		// worker to improve fairness and give this
 		// finer-grained control over schedule?
 		now := nanotime() - gcController.bgMarkStartTime
-		then := now + forcePreemptNS
+		preemptThen := now + forcePreemptNS
 		timeUsedIfRun := c.fractionalMarkTime + forcePreemptNS
-		if float64(timeUsedIfRun)/float64(then) > c.fractionalUtilizationGoal {
+		if float64(timeUsedIfRun)/float64(preemptThen) > c.fractionalUtilizationGoal {
 			// Nope, we'd overshoot the utilization goal
 			xaddint64(&c.fractionalMarkWorkersNeeded, +1)
 			return nil

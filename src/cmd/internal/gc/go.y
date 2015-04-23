@@ -41,7 +41,7 @@ import (
 %token	<sym>	LDEFAULT LDEFER LELSE LFALL LFOR LFUNC LGO LGOTO
 %token	<sym>	LIF LIMPORT LINTERFACE LMAP LNAME
 %token	<sym>	LPACKAGE LRANGE LRETURN LSELECT LSTRUCT LSWITCH
-%token	<sym>	LTYPE LVAR
+%token	<sym>	LTHEN LTYPE LVAR
 
 %token		LANDAND LANDNOT LBODY LCOMM LDEC LEQ LGE LGT
 %token		LIGNORE LINC LLE LLSH LLT LNE LOROR LRSH
@@ -53,7 +53,7 @@ import (
 %type	<node>	stmt ntype
 %type	<node>	arg_type
 %type	<node>	case caseblock
-%type	<node>	compound_stmt dotname embed expr complitexpr bare_complitexpr
+%type	<node>	compound_stmt dotname embed expr ternaryexpr complitexpr bare_complitexpr
 %type	<node>	expr_or_type
 %type	<node>	fndcl hidden_fndcl fnliteral
 %type	<node>	for_body for_header for_stmt if_header if_stmt non_dcl_stmt
@@ -93,6 +93,9 @@ import (
 %type	<typ>	hidden_type_recv_chan hidden_type_non_recv_chan
 
 %left		LCOMM	/* outside the usual hierarchy; here for good error messages */
+
+%left		LTHEN
+%left		LELSE
 
 %left		LOROR
 %left		LANDAND
@@ -791,7 +794,8 @@ select_stmt:
  * expressions
  */
 expr:
-	uexpr
+	ternaryexpr
+|	uexpr
 |	expr LOROR expr
 	{
 		$$ = Nod(OOROR, $1, $3);
@@ -872,6 +876,13 @@ expr:
 |	expr LCOMM expr
 	{
 		$$ = Nod(OSEND, $1, $3);
+	}
+
+ternaryexpr:
+	expr LTHEN expr LELSE expr
+	{
+		$$ = Nod(OIFTHEN, $3, $5);
+		$$.Ntest = $1;
 	}
 
 uexpr:

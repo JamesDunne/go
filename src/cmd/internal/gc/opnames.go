@@ -125,6 +125,7 @@ var opnames = []string{
 	OFOR:             "FOR",
 	OGOTO:            "GOTO",
 	OIF:              "IF",
+	OIFTHEN:          "IFTHEN",
 	OLABEL:           "LABEL",
 	OPROC:            "PROC",
 	ORANGE:           "RANGE",

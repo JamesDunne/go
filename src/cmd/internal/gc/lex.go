@@ -2110,6 +2110,7 @@ var syms = []struct {
 	{"select", LSELECT, Txxx, OXXX},
 	{"struct", LSTRUCT, Txxx, OXXX},
 	{"switch", LSWITCH, Txxx, OXXX},
+	{"then", LTHEN, Txxx, OXXX},
 	{"type", LTYPE, Txxx, OXXX},
 	{"var", LVAR, Txxx, OXXX},
 	{"append", LNAME, Txxx, OAPPEND},
@@ -2423,6 +2424,7 @@ var lexn = []struct {
 	{LSELECT, "SELECT"},
 	{LSTRUCT, "STRUCT"},
 	{LSWITCH, "SWITCH"},
+	{LTHEN, "THEN"},
 	{LTYPE, "TYPE"},
 	{LVAR, "VAR"},
 }
@@ -2468,6 +2470,7 @@ var yytfix = []struct {
 	{"LSELECT", "select"},
 	{"LSTRUCT", "struct"},
 	{"LSWITCH", "switch"},
+	{"LTHEN", "then"},
 	{"LTYPE", "type"},
 	{"LVAR", "var"},
 	{"LANDAND", "&&"},

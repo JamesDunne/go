@@ -264,6 +264,7 @@ const (
 	OFOR      // for
 	OGOTO     // goto
 	OIF       // if
+	OIFTHEN   // ifthen
 	OLABEL    // label:
 	OPROC     // go
 	ORANGE    // range

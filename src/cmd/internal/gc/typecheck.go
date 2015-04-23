@@ -2097,6 +2097,27 @@ OpSwitch:
 		typechecklist(n.Nbody, Etop)
 		typechecklist(n.Nelse, Etop)
 		break OpSwitch
+		
+	case OIFTHEN:
+		ok |= Erv
+		typecheck(&n.Ntest, Erv)
+		if n.Ntest != nil {
+			t := n.Ntest.Type
+			if t != nil && t.Etype != TBOOL {
+				Yyerror("non-bool %v used as ifthen condition", Nconv(n.Ntest, obj.FmtLong))
+			}
+		}
+		// Check 'then' and 'else' expressions:
+		typecheck(&n.Left, Erv)
+		typecheck(&n.Right, Erv)
+		defaultlit(&n.Left, nil)
+		defaultlit(&n.Right, nil)
+		// Expression types must match:
+		if !Eqtype(n.Left.Type, n.Right.Type) {
+			Yyerror("then and else expression types must match for ifthen expression")
+		}
+		n.Type = n.Left.Type
+		break OpSwitch
 
 	case ORETURN:
 		ok |= Etop

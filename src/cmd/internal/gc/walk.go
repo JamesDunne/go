@@ -552,6 +552,13 @@ func walkexpr(np **Node, init **NodeList) {
 		addinit(&n.Right, ll)
 		goto ret
 
+	case OIFTHEN:
+		walkexpr(&n.Ntest, init)
+		walkexpr(&n.Left, init)
+		walkexpr(&n.Right, init)
+		n = walkifthen(n, init)
+		goto ret
+
 	case OPRINT, OPRINTN:
 		walkexprlist(n.List, init)
 		n = walkprint(n, init)
@@ -1966,6 +1973,33 @@ ret:
 		lr.N.Typecheck = 1
 	}
 	return nn
+}
+
+func walkifthen(nn *Node, init **NodeList) *Node {
+	var l *NodeList
+
+	ns := temp(nn.Left.Type)        // var ns T
+
+	// init {
+	//   var ns T
+	//   if Ntest {
+	//     ns = thenexpr
+	//   } else {
+	//     ns = elseexpr
+	//   }
+	// }
+	// ns
+
+	nx := Nod(OIF, nil, nil)       
+	nx.Ntest = nn.Ntest
+	nx.Nbody = list1(Nod(OAS, ns, nn.Left))
+	nx.Nelse = list1(Nod(OAS, ns, nn.Right))
+	l = list(l, nx)
+
+	typechecklist(l, Etop)
+	walkstmtlist(l)
+	*init = concat(*init, l)
+	return ns
 }
 
 // generate code for print

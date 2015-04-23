@@ -133,6 +133,7 @@ var goopnames = []string{
 	OGOTO:     "goto",
 	OGT:       ">",
 	OIF:       "if",
+	OIFTHEN:   "ifthen",
 	OIMAG:     "imag",
 	OINC:      "++",
 	OIND:      "*",
@@ -1358,6 +1359,9 @@ func exprfmt(n *Node, prec int) string {
 			return fmt.Sprintf("%v(%v...)", Oconv(int(n.Op), obj.FmtSharp), Hconv(n.List, obj.FmtComma))
 		}
 		return fmt.Sprintf("%v(%v)", Oconv(int(n.Op), obj.FmtSharp), Hconv(n.List, obj.FmtComma))
+
+	case OIFTHEN:
+		return fmt.Sprintf("%v ifthen %v else %v", n.Ntest, n.Left, n.Right)
 
 	case OCALL, OCALLFUNC, OCALLINTER, OCALLMETH, OGETG:
 		var f string
