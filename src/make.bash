@@ -134,7 +134,7 @@ if [ "$1" = "--dist-tool" ]; then
 	if [ "$2" != "" ]; then
 		cp cmd/dist/dist "$2"
 	fi
-	mv cmd/dist/dist "$GOTOOLDIR"/dist
+	/usr/bin/mv cmd/dist/dist "$GOTOOLDIR"/dist
 	exit 0
 fi
 
@@ -145,7 +145,7 @@ if [ "$1" = "--no-clean" ]; then
 fi
 ./cmd/dist/dist bootstrap $buildall $GO_DISTFLAGS -v # builds go_bootstrap
 # Delay move of dist tool to now, because bootstrap may clear tool directory.
-mv cmd/dist/dist "$GOTOOLDIR"/dist
+/usr/bin/mv cmd/dist/dist "$GOTOOLDIR"/dist
 echo
 
 if [ "$GOHOSTARCH" != "$GOARCH" -o "$GOHOSTOS" != "$GOOS" ]; then
@@ -161,7 +161,7 @@ echo "##### Building packages and commands for $GOOS/$GOARCH."
 CC=$CC_FOR_TARGET "$GOTOOLDIR"/go_bootstrap install $GO_FLAGS -gcflags "$GO_GCFLAGS" -ldflags "$GO_LDFLAGS" -v std cmd
 echo
 
-rm -f "$GOTOOLDIR"/go_bootstrap
+/usr/bin/rm -f "$GOTOOLDIR"/go_bootstrap
 
 if [ "$1" != "--no-banner" ]; then
 	"$GOTOOLDIR"/dist banner
