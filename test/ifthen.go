@@ -26,14 +26,23 @@ func asserttest(test bool, msg string) {
 	}
 }
 
+func max(a, b int) int {
+	return a > b then a else b
+}
+
+func min(a, b int) int {
+	return a < b then a else b
+}
+
 func main() {
 	i5 := 5
 	i7 := 7
 
-	max := i5 > i7 then i5 else i7
-	fmt.Printf("max(%d, %d) = %d\n", i5, i7, max)
-	max = i7 > i5 then i7 else i5
-	fmt.Printf("max(%d, %d) = %d\n", i7, i5, max)
+	fmt.Printf("max(%d, %d) = %d\n", i5, i7, max(i5, i7))
+	fmt.Printf("max(%d, %d) = %d\n", i7, i5, max(i7, i5))
+
+	fmt.Printf("min(%d, %d) = %d\n", i5, i7, min(i5, i7))
+	fmt.Printf("min(%d, %d) = %d\n", i7, i5, min(i7, i5))
 
 	a := i5 == i7 then i5 else i7
 	assertequal(a, i7, "i5 == i7")
@@ -44,6 +53,9 @@ func main() {
 	a = i7 == i7 then i7 else i5
 	assertequal(a, i7, "i7 != i7")
 
-	t := (i7 > i5) then true else false
+	t := i7 > i5 then true else false
 	asserttest(t, "i7 > i5")
+
+	p := i7 > i5 then int64(1) else int64(0)
+	fmt.Printf("p = %d\n", p)
 }
